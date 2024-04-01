@@ -6,7 +6,7 @@
 /*   By: tappourc <tappourc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 17:03:42 by tappourc          #+#    #+#             */
-/*   Updated: 2024/03/30 17:05:46 by tappourc         ###   ########.fr       */
+/*   Updated: 2024/04/01 12:06:40 by tappourc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,13 @@
 
 int	main(int ac, char **av)
 {
-	printf("[%d], %s\n", ac, av[1]);
+	if (ac < 4 || ac > 5)
+	{
+		printf("Invalid num of args\n");
+		return (1);
+	}
+	init_philo()
 	return ;
 }
+
+void	init_philo()
