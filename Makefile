@@ -6,18 +6,20 @@
 #    By: tappourc <tappourc@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/30 16:56:39 by tappourc          #+#    #+#              #
-#    Updated: 2024/03/30 17:18:12 by tappourc         ###   ########.fr        #
+#    Updated: 2024/04/02 11:41:33 by tappourc         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-SRC_PATH = ./src/
-CC = cc
-CFLAGS = -Wall -Werror -Wextra -g -I
-RM = rm -f
 NAME = philo
+CC = cc
+INCLUDE = includes
+CFLAGS = -Wall -Werror -Wextra -g -I $(INCLUDE)
+RM = rm -f
 
 SRC = \
-	${SRC_PATH}main.c
+		main.c \
+		./src/ft_atoi.c \
+		./src/init_data.c \
 
 OBJ	= ${SRC:.c=.o}
 
@@ -28,7 +30,6 @@ all: ${NAME}
 
 ${NAME}: ${OBJ}
 	@${CC} ${CFLAGS} ${OBJ} -o ${NAME}
-
 
 clean:
 	@${RM} ${OBJ}
