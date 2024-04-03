@@ -6,7 +6,7 @@
 /*   By: tappourc <tappourc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 16:57:13 by tappourc          #+#    #+#             */
-/*   Updated: 2024/04/02 11:41:34 by tappourc         ###   ########.fr       */
+/*   Updated: 2024/04/03 15:42:26 by tappourc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,28 +30,34 @@ typedef enum s_bool
 	false = 0
 }				t_bool;
 
-typedef struct s_all_data
-{
-	int			nb_philo;
-	int			time_to_die;
-	int			time_to_eat;
-	int			time_to_sleep;
-	int			must_eat;
-}				t_all_data;
-
 typedef struct s_philo
 {
-	int			id;
-	int			ate;
-	int			is_dead;
-	int			last_meal;
-	t_all_data	*all_data;
+	int				id;
+	int				ate;
+	int				last_meal;
+	pthread_mutex_t	*left_fork;
+	pthread_mutex_t	*right_fork;
 }				t_philo;
+
+typedef struct s_all
+{
+	int				nb_philo;
+	int				time_to_die;
+	int				time_to_eat;
+	int				time_to_sleep;
+	int				must_eat;
+	int				is_dead;
+	pthread_mutex_t	*dead_lock;
+	pthread_mutex_t	*print_mtx;
+	t_philo			*philo;
+}				t_all;
 
 // FUNCTIONS
 
-int				ft_atoi(const char *nptr);
-int				check_args(t_all_data *all_data);
-int				init_data(int ac, char **av, t_all_data *all_data);
+int		ft_atoi(const char *nptr);
+int		check_args(t_all *all);
+int		init_data(int ac, char **av, t_all *all);
+int		ft_usleep(size_t milliseconds);
+size_t	get_current_time(void);
 
 #endif

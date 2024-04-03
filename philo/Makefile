@@ -6,7 +6,7 @@
 #    By: tappourc <tappourc@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/30 16:56:39 by tappourc          #+#    #+#              #
-#    Updated: 2024/04/02 11:41:33 by tappourc         ###   ########.fr        #
+#    Updated: 2024/04/03 15:18:08 by tappourc         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,6 +20,7 @@ SRC = \
 		main.c \
 		./src/ft_atoi.c \
 		./src/init_data.c \
+		./src/sleep.c \
 
 OBJ	= ${SRC:.c=.o}
 
