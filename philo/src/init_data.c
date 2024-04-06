@@ -6,7 +6,7 @@
 /*   By: tappourc <tappourc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 10:49:13 by tappourc          #+#    #+#             */
-/*   Updated: 2024/04/06 12:10:16 by tappourc         ###   ########.fr       */
+/*   Updated: 2024/04/06 17:52:26 by tappourc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,16 +80,19 @@ int	init_philo(t_all *all, t_philo *philos, int nb, pthread_mutex_t *forks_tab)
 		philos[i].last_meal = 0;
 		philos[i].dead_mtx = all->dead_mtx;
 		philos[i].print_mtx = all->print_mtx;
-		philos[i].left_fork = &forks_tab[i];
+		philos[i].left_fork = forks_tab[i];
 		if (i > 0)
-			philos[i].right_fork = philos[i - 1].left_fork;
+			philos[i].right_fork = &(philos[i - 1].left_fork);
 	}
-	philos[0].right_fork = philos[nb - 1].left_fork;
+	philos[0].right_fork = &(philos[nb - 1].left_fork);
 	i = -1;
 	while(++i < nb)
 	{
 		if (pthread_create(&philos[i].thread, NULL, &routine, &philos[i]) != 0)
 			return (false);
 	}
+	i = -1;
+	while(++i < nb)
+		pthread_join(philos[i].thread, NULL);
 	return (true);
 }

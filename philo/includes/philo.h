@@ -6,7 +6,7 @@
 /*   By: tappourc <tappourc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 16:57:13 by tappourc          #+#    #+#             */
-/*   Updated: 2024/04/06 12:12:01 by tappourc         ###   ########.fr       */
+/*   Updated: 2024/04/06 17:52:33 by tappourc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ typedef struct s_philo
 	int				start_time;
 	struct s_all	*all_data;
 	pthread_t		thread;
-	pthread_mutex_t	*left_fork;
+	pthread_mutex_t	left_fork;
 	pthread_mutex_t	*right_fork;
 	pthread_mutex_t	print_mtx;
 	pthread_mutex_t	dead_mtx;
