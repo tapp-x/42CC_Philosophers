@@ -6,7 +6,7 @@
 /*   By: tappourc <tappourc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/05 09:51:07 by tappourc          #+#    #+#             */
-/*   Updated: 2024/04/05 11:07:19 by tappourc         ###   ########.fr       */
+/*   Updated: 2024/04/06 12:05:25 by tappourc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,9 @@ void	ft_safe_print(char *str, t_philo *philo)
 {
 	long	time;
 	
-	pthread_mutex_lock(&(philo->all_data.print_mtx));
-	time = get_current_time() - philo->all_data.start_time;
-	if (time <= 0 && time <= INT_MAX)
+	pthread_mutex_lock(&(philo->print_mtx));
+	time = get_current_time() - philo->start_time;
+	if (time <= 0 && time <= 2147483647)
 		printf("[%ld] %d %s\n",time, philo->id, str);
-	pthread_mutex_unlock(&(philo->all_data.print_mtx));
+	pthread_mutex_unlock(&(philo->print_mtx));
 }

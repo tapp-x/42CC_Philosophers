@@ -6,7 +6,7 @@
 /*   By: tappourc <tappourc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 10:49:13 by tappourc          #+#    #+#             */
-/*   Updated: 2024/04/05 10:26:10 by tappourc         ###   ########.fr       */
+/*   Updated: 2024/04/06 12:10:16 by tappourc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 int	init_data(int ac, char **av, t_all *all)
 {
-	pthread_mutex_init(&all->dead_lock, NULL);
-	pthread_mutex_init(&all->print_mtx, NULL);
+	pthread_mutex_init(&(all->dead_mtx), NULL);
+	pthread_mutex_init(&(all->print_mtx), NULL);
 	all->nb_philo = ft_atoi(av[1]);
 	all->time_to_die = ft_atoi(av[2]);
 	all->time_to_eat = ft_atoi(av[3]);
@@ -50,6 +50,46 @@ int	check_args(t_all *all)
 	{
 		printf("'number_of_times_each_philosopher_must_eat' must be > 0\n");
 		return (false);
+	}
+	return (true);
+}
+
+void	init_forks(pthread_mutex_t *forks_tab, int philos)
+{
+	int	i;
+
+	i = 0;
+	while(i < philos)
+	{
+		pthread_mutex_init(&forks_tab[i], NULL);
+		i++;
+	}
+}
+
+int	init_philo(t_all *all, t_philo *philos, int nb, pthread_mutex_t *forks_tab)
+{
+	int				i;
+
+	i = -1;
+	while(++i < nb)
+	{
+		philos[i].all_data = all;
+		philos[i].ate = 0;
+		philos[i].id = i;
+		philos[i].start_time = get_current_time();
+		philos[i].last_meal = 0;
+		philos[i].dead_mtx = all->dead_mtx;
+		philos[i].print_mtx = all->print_mtx;
+		philos[i].left_fork = &forks_tab[i];
+		if (i > 0)
+			philos[i].right_fork = philos[i - 1].left_fork;
+	}
+	philos[0].right_fork = philos[nb - 1].left_fork;
+	i = -1;
+	while(++i < nb)
+	{
+		if (pthread_create(&philos[i].thread, NULL, &routine, &philos[i]) != 0)
+			return (false);
 	}
 	return (true);
 }
