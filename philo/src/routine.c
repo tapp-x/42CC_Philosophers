@@ -6,7 +6,7 @@
 /*   By: tappourc <tappourc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 10:49:22 by tappourc          #+#    #+#             */
-/*   Updated: 2024/04/08 14:30:37 by tappourc         ###   ########.fr       */
+/*   Updated: 2024/04/12 10:58:24 by tappourc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,11 @@
 
 void	*routine(void *phil)
 {
-	t_philo *philo;
+	t_philo	*philo;
 
 	philo = (t_philo *)phil;
 	ft_usleep(1);
-	while(philo->ate < philo->all_data->must_eat) // fonction qui tcheck la mort en live pr tlmd
+	while (philo->ate < philo->all_data->must_eat)
 	{
 		is_eating(philo);
 		ft_safe_print("is sleeping", philo);
@@ -42,19 +42,25 @@ void	is_eating(t_philo *philo)
 	pthread_mutex_unlock(&philo->left_fork);
 }
 
-// dans la monitoring, check la diff entre curTime et lastmeal, si sup a t2die alors exit
+// dans la monitoring, check la diff entre curTime et lastmeal,
+	// si sup a t2die alors exit
 // try avec exit pr commencer
 
 void	monitoring(void *param)
 {
-	t_all	*all;
+	t_philo	*philo;
 	int		i;
+	int		time;
 
-	all = (t_all *param);
+	philo = (t_all *)param;
 	i = 0;
-	while(true)
+	while (true)
 	{
-
+		time = get_current_time;
+		if (time - philo[i].last_meal >= philo->all_data->time_to_die)
+		{
+			ft_safe_print("is dead", &philo[i]);
+			return ;
+		}
 	}
-
 }

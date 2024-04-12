@@ -6,7 +6,7 @@
 /*   By: tappourc <tappourc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 10:12:00 by tappourc          #+#    #+#             */
-/*   Updated: 2024/04/02 11:41:36 by tappourc         ###   ########.fr       */
+/*   Updated: 2024/04/12 10:33:13 by tappourc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,9 @@ static int	ft_is_space(char c)
 
 int	ft_atoi(const char *nptr)
 {
-	int neg;
-	int nb;
-	int i;
+	int	neg;
+	int	nb;
+	int	i;
 
 	i = 0;
 	nb = 0;

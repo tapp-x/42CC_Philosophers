@@ -6,7 +6,7 @@
 /*   By: tappourc <tappourc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 10:49:13 by tappourc          #+#    #+#             */
-/*   Updated: 2024/04/06 17:52:26 by tappourc         ###   ########.fr       */
+/*   Updated: 2024/04/12 10:32:51 by tappourc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	init_data(int ac, char **av, t_all *all)
 
 int	check_args(t_all *all)
 {
-	if (all->nb_philo < 1 || all->nb_philo > 200)
+	if (all->nb_philo < 1 || all->nb_philo > MAX_PHIL)
 	{
 		printf("'number_of_philosophers' must be in range [1-200]\n");
 		return (false);
@@ -59,7 +59,7 @@ void	init_forks(pthread_mutex_t *forks_tab, int philos)
 	int	i;
 
 	i = 0;
-	while(i < philos)
+	while (i < philos)
 	{
 		pthread_mutex_init(&forks_tab[i], NULL);
 		i++;
@@ -68,10 +68,10 @@ void	init_forks(pthread_mutex_t *forks_tab, int philos)
 
 int	init_philo(t_all *all, t_philo *philos, int nb, pthread_mutex_t *forks_tab)
 {
-	int				i;
+	int	i;
 
 	i = -1;
-	while(++i < nb)
+	while (++i < nb)
 	{
 		philos[i].all_data = all;
 		philos[i].ate = 0;
@@ -86,13 +86,13 @@ int	init_philo(t_all *all, t_philo *philos, int nb, pthread_mutex_t *forks_tab)
 	}
 	philos[0].right_fork = &(philos[nb - 1].left_fork);
 	i = -1;
-	while(++i < nb)
+	while (++i < nb)
 	{
 		if (pthread_create(&philos[i].thread, NULL, &routine, &philos[i]) != 0)
 			return (false);
 	}
 	i = -1;
-	while(++i < nb)
+	while (++i < nb)
 		pthread_join(philos[i].thread, NULL);
 	return (true);
 }

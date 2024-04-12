@@ -6,7 +6,7 @@
 /*   By: tappourc <tappourc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 16:57:13 by tappourc          #+#    #+#             */
-/*   Updated: 2024/04/06 17:52:33 by tappourc         ###   ########.fr       */
+/*   Updated: 2024/04/12 10:34:29 by tappourc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,8 @@ typedef enum e_bool
 {
 	true = 1,
 	false = 0,
-	none = -1
+	none = -1,
+	MAX_PHIL = 200
 }					e_bool;
 
 typedef struct s_philo
@@ -64,6 +65,8 @@ int					ft_atoi(const char *nptr);
 int					ft_usleep(size_t milliseconds);
 size_t				get_current_time(void);
 void				ft_safe_print(char *str, t_philo *philo);
+void				free_all(t_all *all);
+void				free_phil(t_philo *philo, int nb);
 
 // INIT
 int					check_args(t_all *all);

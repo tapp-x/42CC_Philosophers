@@ -6,7 +6,7 @@
 /*   By: tappourc <tappourc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 17:03:42 by tappourc          #+#    #+#             */
-/*   Updated: 2024/04/06 12:14:32 by tappourc         ###   ########.fr       */
+/*   Updated: 2024/04/12 10:33:49 by tappourc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	main(int ac, char **av)
 {
 	t_all			*all;
-	pthread_mutex_t	forks_tabs[200];
+	pthread_mutex_t	forks_tabs[MAX_PHIL];
 
 	if (ac < 5 || ac > 6)
 	{
@@ -27,12 +27,13 @@ int	main(int ac, char **av)
 		return (1);
 	if (init_data(ac, av, all) == false)
 	{
-		// free_phil(all);
+		free_all(all);
 		return (1);
 	}
 	init_forks(forks_tabs, all->nb_philo);
 	if (init_philo(all, all->philo, all->nb_philo, forks_tabs) == false)
 		printf("Failed to create thread\n");
-	// free_phil(all);
+	free_phil(all->philo, all->nb_philo);
+	free_all(all);
 	return (0);
 }
