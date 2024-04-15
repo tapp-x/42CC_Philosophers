@@ -6,7 +6,7 @@
 /*   By: tappourc <tappourc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 16:57:13 by tappourc          #+#    #+#             */
-/*   Updated: 2024/04/12 10:34:29 by tappourc         ###   ########.fr       */
+/*   Updated: 2024/04/15 10:33:29 by tappourc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ typedef struct s_all
 	int				must_eat;
 	int				is_dead;
 	size_t			start_time;
+	pthread_t		monit;
 	pthread_mutex_t	dead_mtx;
 	pthread_mutex_t	print_mtx;
 	t_philo			*philo;
@@ -78,5 +79,6 @@ int					init_philo(t_all *all, t_philo *philos, int nb,
 // MONITOR
 void				*routine(void *phil);
 void				is_eating(t_philo *philo);
+void				monitoring(void *param);
 
 #endif

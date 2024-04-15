@@ -6,7 +6,7 @@
 /*   By: tappourc <tappourc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 10:49:22 by tappourc          #+#    #+#             */
-/*   Updated: 2024/04/12 10:58:24 by tappourc         ###   ########.fr       */
+/*   Updated: 2024/04/15 11:57:01 by tappourc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,15 +52,20 @@ void	monitoring(void *param)
 	int		i;
 	int		time;
 
-	philo = (t_all *)param;
+	philo = (t_philo *)param;
 	i = 0;
 	while (true)
 	{
-		time = get_current_time;
+		ft_usleep(10);
+		time = get_current_time();
 		if (time - philo[i].last_meal >= philo->all_data->time_to_die)
 		{
 			ft_safe_print("is dead", &philo[i]);
 			return ;
 		}
+		if (i == (philo->all_data->nb_philo - 1))
+			i = 0;
+		else
+			i++;
 	}
 }
