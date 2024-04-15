@@ -6,7 +6,7 @@
 /*   By: tappourc <tappourc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 16:57:13 by tappourc          #+#    #+#             */
-/*   Updated: 2024/04/15 10:33:29 by tappourc         ###   ########.fr       */
+/*   Updated: 2024/04/15 17:11:23 by tappourc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,6 @@ int					init_philo(t_all *all, t_philo *philos, int nb,
 // MONITOR
 void				*routine(void *phil);
 void				is_eating(t_philo *philo);
-void				monitoring(void *param);
+void				*monitoring(void *param);
 
 #endif

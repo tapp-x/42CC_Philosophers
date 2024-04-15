@@ -6,7 +6,7 @@
 /*   By: tappourc <tappourc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 10:49:13 by tappourc          #+#    #+#             */
-/*   Updated: 2024/04/12 10:32:51 by tappourc         ###   ########.fr       */
+/*   Updated: 2024/04/15 17:11:27 by tappourc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ int	init_philo(t_all *all, t_philo *philos, int nb, pthread_mutex_t *forks_tab)
 		philos[i].ate = 0;
 		philos[i].id = i;
 		philos[i].start_time = get_current_time();
-		philos[i].last_meal = 0;
+		philos[i].last_meal = philos[i].start_time;
 		philos[i].dead_mtx = all->dead_mtx;
 		philos[i].print_mtx = all->print_mtx;
 		philos[i].left_fork = forks_tab[i];
