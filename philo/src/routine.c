@@ -6,7 +6,7 @@
 /*   By: tappourc <tappourc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 10:49:22 by tappourc          #+#    #+#             */
-/*   Updated: 2024/04/15 17:11:52 by tappourc         ###   ########.fr       */
+/*   Updated: 2024/04/16 16:52:07 by tappourc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,60 +18,56 @@ void	*routine(void *phil)
 
 	philo = (t_philo *)phil;
 	ft_usleep(1);
-	while (true)
+	while (philo->all_data->is_dead == false)
 	{
+		if (all_eat(philo) == true)
+			break;
 		is_eating(philo);
 		ft_safe_print("is sleeping", philo);
 		ft_usleep(philo->all_data->time_to_sleep);
 		ft_safe_print("is thinking", philo);
-		if (philo->id == (philo->all_data->nb_philo - 1)
-			&& philo->ate == philo->all_data->must_eat)
-		{
-			pthread_mutex_lock(&(philo->print_mtx));
-			printf("All philos ate\n");
-			pthread_mutex_unlock(&(philo->print_mtx));
-			exit(1) ;
-		}
 	}
 	return (phil);
 }
 
-// int	all_eat(t_philo *philo)
-// {
-// 	int	i;
+int	all_eat(t_philo *philo)
+{
+	int	i;
+	int	count;
 	
-// 	i = 0;
-// 	count = 0;
-// 	while(i < philo->all_data->nb_philo)
-// 	{
-// 		if(philo[i].ate == philo->all_data->must_eat)
-// 			philo->all_data->finished += 1;
-// 		i++;
-// 	}
-// 	if (i == count)
-// 		return (true);
-// 	return (false);
-// }
+	i = 0;
+	count = 0;
+	while(i < philo->all_data->nb_philo)
+	{
+		if(philo[i].ate == philo[i].must_eat)
+			count++;
+		i++;
+	}
+	if (count == (philo->all_data->nb_philo))
+	{
+		pthread_mutex_lock(&philo->all_data->dead_mtx);
+		philo->all_data->is_dead = true;
+		pthread_mutex_unlock(&philo->all_data->dead_mtx);
+		return (true);
+	}
+	return (false);
+}
 
 void	is_eating(t_philo *philo)
 {
+	if (philo->must_eat != none && philo->ate == philo->must_eat)
+		return ;
 	pthread_mutex_lock(&philo->left_fork);
 	ft_safe_print("has taken a fork", philo);
 	pthread_mutex_lock(philo->right_fork);
 	ft_safe_print("has taken a fork", philo);
-	ft_safe_print("is eating", philo);
 	philo->last_meal = (int)get_current_time();
 	philo->ate = philo->ate + 1;
-	// if (philo->ate == philo->all_data->must_eat)
-	// 	philo->all_data->finished += 1;
+	ft_safe_print("is eating", philo);
 	ft_usleep(philo->all_data->time_to_eat);
 	pthread_mutex_unlock(philo->right_fork);
 	pthread_mutex_unlock(&philo->left_fork);
 }
-
-// dans la monitoring, check la diff entre curTime et lastmeal,
-// si sup a t2die alors exit
-// try avec exit pr commencer
 
 void	*monitoring(void *param)
 {
@@ -81,14 +77,16 @@ void	*monitoring(void *param)
 
 	philo = (t_philo *)param;
 	i = 0;
-	while (true)
+	while (philo->all_data->is_dead == false)
 	{
 		ft_usleep(10);
 		time = get_current_time();
 		if (time - philo[i].last_meal >= philo->all_data->time_to_die)
 		{
 			ft_safe_print("is dead", &philo[i]);
-			break ;
+			pthread_mutex_lock(&philo->all_data->dead_mtx);
+			philo->all_data->is_dead = true;
+			pthread_mutex_unlock(&philo->all_data->dead_mtx);
 		}
 		if (i == (philo->all_data->nb_philo - 1))
 			i = 0;

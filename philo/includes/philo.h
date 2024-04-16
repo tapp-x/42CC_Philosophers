@@ -6,7 +6,7 @@
 /*   By: tappourc <tappourc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 16:57:13 by tappourc          #+#    #+#             */
-/*   Updated: 2024/04/15 17:11:23 by tappourc         ###   ########.fr       */
+/*   Updated: 2024/04/16 16:26:13 by tappourc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ typedef struct s_philo
 {
 	int				id;
 	int				ate;
+	int				must_eat;
 	int				last_meal;
 	int				start_time;
 	struct s_all	*all_data;
@@ -80,5 +81,6 @@ int					init_philo(t_all *all, t_philo *philos, int nb,
 void				*routine(void *phil);
 void				is_eating(t_philo *philo);
 void				*monitoring(void *param);
+int					all_eat(t_philo *philo);
 
 #endif
