@@ -6,7 +6,7 @@
 /*   By: tappourc <tappourc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 10:49:13 by tappourc          #+#    #+#             */
-/*   Updated: 2024/04/17 12:46:58 by tappourc         ###   ########.fr       */
+/*   Updated: 2024/04/17 16:14:24 by tappourc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,7 @@ int	init_philo(t_all *all, t_philo *philos, int nb, pthread_mutex_t *forks_tab)
 		philos[i].left_fork = forks_tab[i];
 		if (i > 0)
 			philos[i].right_fork = &(philos[i - 1].left_fork);
+		pthread_mutex_init(&philos[i].meal, NULL);
 	}
 	philos[0].right_fork = &(philos[nb - 1].left_fork);
 	if (pthread_create(&all->monit, NULL, &monitoring, all) != 0)
@@ -97,8 +98,8 @@ int	init_philo(t_all *all, t_philo *philos, int nb, pthread_mutex_t *forks_tab)
 		ft_usleep(1);
 	}
 	i = -1;
+	pthread_join(all->monit, NULL);
 	while (++i < nb)
 		pthread_join(philos[i].thread, NULL);
-	pthread_join(all->monit, NULL);
 	return (true);
 }

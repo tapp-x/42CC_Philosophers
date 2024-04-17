@@ -6,7 +6,7 @@
 /*   By: tappourc <tappourc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 16:57:13 by tappourc          #+#    #+#             */
-/*   Updated: 2024/04/17 11:58:35 by tappourc         ###   ########.fr       */
+/*   Updated: 2024/04/17 16:07:52 by tappourc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ typedef struct s_philo
 	struct s_all	*all_data;
 	pthread_t		thread;
 	pthread_mutex_t	left_fork;
+	pthread_mutex_t	meal;
 	pthread_mutex_t	*right_fork;
 	pthread_mutex_t	print_mtx;
 	pthread_mutex_t	dead_mtx;

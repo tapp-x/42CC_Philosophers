@@ -6,7 +6,7 @@
 /*   By: tappourc <tappourc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/05 09:51:07 by tappourc          #+#    #+#             */
-/*   Updated: 2024/04/16 16:26:02 by tappourc         ###   ########.fr       */
+/*   Updated: 2024/04/17 16:09:36 by tappourc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ void	free_phil(t_philo *philo, int nb)
 	while (i < nb)
 	{
 		pthread_mutex_destroy(&philo[i].left_fork);
+		pthread_mutex_destroy(&philo[i].meal);
 		if (nb > 1)
 			pthread_mutex_destroy(philo[i].right_fork);
 		// pthread_mutex_destroy(&philo[i].dead_mtx);
