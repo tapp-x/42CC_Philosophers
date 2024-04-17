@@ -6,7 +6,7 @@
 #    By: tappourc <tappourc@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/30 16:56:39 by tappourc          #+#    #+#              #
-#    Updated: 2024/04/06 12:11:15 by tappourc         ###   ########.fr        #
+#    Updated: 2024/04/17 11:44:44 by tappourc         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,6 +22,7 @@ SRC = \
 		./src/init_data.c \
 		./src/utils.c \
 		./src/routine.c \
+		./src/monitoring.c \
 		
 
 OBJ	= ${SRC:.c=.o}

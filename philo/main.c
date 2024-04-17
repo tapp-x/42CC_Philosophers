@@ -6,7 +6,7 @@
 /*   By: tappourc <tappourc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 17:03:42 by tappourc          #+#    #+#             */
-/*   Updated: 2024/04/15 16:22:54 by tappourc         ###   ########.fr       */
+/*   Updated: 2024/04/17 10:44:33 by tappourc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,9 @@ int	main(int ac, char **av)
 	init_forks(forks_tabs, all->nb_philo);
 	if (init_philo(all, all->philo, all->nb_philo, forks_tabs) == false)
 		printf("Failed to create thread\n");
-	if (pthread_create(&all->monit, NULL, &monitoring, all->philo) != 0)
-		return (false);
-	pthread_join(all->monit, NULL);
+	// if (pthread_create(&all->monit, NULL, &monitoring, all->philo) != 0)
+	// 	return (false);
+	// pthread_join(all->monit, NULL);
 	free_phil(all->philo, all->nb_philo);
 	free_all(all);
 	return (0);

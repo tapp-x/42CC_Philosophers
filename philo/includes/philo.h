@@ -6,7 +6,7 @@
 /*   By: tappourc <tappourc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 16:57:13 by tappourc          #+#    #+#             */
-/*   Updated: 2024/04/16 16:26:13 by tappourc         ###   ########.fr       */
+/*   Updated: 2024/04/17 11:58:35 by tappourc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,10 +77,15 @@ void				init_forks(pthread_mutex_t *forks_tab, int philos);
 int					init_philo(t_all *all, t_philo *philos, int nb,
 						pthread_mutex_t *forks_tab);
 
-// MONITOR
+// ACTION
 void				*routine(void *phil);
-void				is_eating(t_philo *philo);
-void				*monitoring(void *param);
+int					is_eating(t_philo *philo);
 int					all_eat(t_philo *philo);
+
+// MONITORING
+void				*monitoring(void *param);
+int					check_meal(t_philo *philo);
+int					check_death(t_all *all);
+int					a_philo_is_dead(t_philo *philo);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: tappourc <tappourc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 10:49:13 by tappourc          #+#    #+#             */
-/*   Updated: 2024/04/16 10:44:32 by tappourc         ###   ########.fr       */
+/*   Updated: 2024/04/17 12:46:58 by tappourc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ int	init_data(int ac, char **av, t_all *all)
 		return (false);
 	if (check_args(all) == false)
 		return (false);
+	printf("DEBUG: T2die:%d T2eat:%d T2sleep:%d\n", all->time_to_die, all->time_to_eat, all->time_to_sleep);
 	return (true);
 }
 
@@ -86,6 +87,8 @@ int	init_philo(t_all *all, t_philo *philos, int nb, pthread_mutex_t *forks_tab)
 			philos[i].right_fork = &(philos[i - 1].left_fork);
 	}
 	philos[0].right_fork = &(philos[nb - 1].left_fork);
+	if (pthread_create(&all->monit, NULL, &monitoring, all) != 0)
+		return (false);
 	i = -1;
 	while (++i < nb)
 	{
@@ -96,5 +99,6 @@ int	init_philo(t_all *all, t_philo *philos, int nb, pthread_mutex_t *forks_tab)
 	i = -1;
 	while (++i < nb)
 		pthread_join(philos[i].thread, NULL);
+	pthread_join(all->monit, NULL);
 	return (true);
 }
