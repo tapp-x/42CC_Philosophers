@@ -6,20 +6,24 @@
 /*   By: tappourc <tappourc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 10:49:13 by tappourc          #+#    #+#             */
-/*   Updated: 2024/04/17 16:14:24 by tappourc         ###   ########.fr       */
+/*   Updated: 2024/04/17 19:52:43 by tappourc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
+void	launch_time(t_all *all);
+
 int	init_data(int ac, char **av, t_all *all)
 {
 	pthread_mutex_init(&(all->dead_mtx), NULL);
 	pthread_mutex_init(&(all->print_mtx), NULL);
+	pthread_mutex_init(&(all->timer), NULL);
 	all->nb_philo = ft_atoi(av[1]);
 	all->time_to_die = ft_atoi(av[2]);
 	all->time_to_eat = ft_atoi(av[3]);
 	all->time_to_sleep = ft_atoi(av[4]);
+	all->start_time = false;
 	all->is_dead = false;
 	if (ac == 6)
 		all->must_eat = ft_atoi(av[5]);
@@ -78,28 +82,43 @@ int	init_philo(t_all *all, t_philo *philos, int nb, pthread_mutex_t *forks_tab)
 		philos[i].ate = 0;
 		philos[i].id = i;
 		philos[i].must_eat = all->must_eat;
-		philos[i].start_time = get_current_time();
-		philos[i].last_meal = philos[i].start_time;
-		philos[i].dead_mtx = all->dead_mtx;
-		philos[i].print_mtx = all->print_mtx;
+		philos[i].last_meal = 0;
 		philos[i].left_fork = forks_tab[i];
+		pthread_mutex_init(&philos[i].meal, NULL);
 		if (i > 0)
 			philos[i].right_fork = &(philos[i - 1].left_fork);
-		pthread_mutex_init(&philos[i].meal, NULL);
 	}
 	philos[0].right_fork = &(philos[nb - 1].left_fork);
+	// printf("test\n");
 	if (pthread_create(&all->monit, NULL, &monitoring, all) != 0)
 		return (false);
 	i = -1;
 	while (++i < nb)
 	{
+		// ft_safe_print("THREadING", &all->philo[i]);
 		if (pthread_create(&philos[i].thread, NULL, &routine, &philos[i]) != 0)
 			return (false);
 		ft_usleep(1);
 	}
-	i = -1;
-	pthread_join(all->monit, NULL);
-	while (++i < nb)
-		pthread_join(philos[i].thread, NULL);
+	launch_time(all);
 	return (true);
+}
+
+void	launch_time(t_all *all)
+{
+	int	i;
+	int	time;
+
+	i = 0;
+	time = get_current_time();
+	while(i < all->nb_philo)
+	{
+		pthread_mutex_lock(&all->philo[i].meal);
+		all->philo[i].last_meal = time;
+		pthread_mutex_unlock(&all->philo[i].meal);
+		i++;
+	}
+	pthread_mutex_lock(&all->timer);
+	all->start_time = time;
+	pthread_mutex_unlock(&all->timer);
 }

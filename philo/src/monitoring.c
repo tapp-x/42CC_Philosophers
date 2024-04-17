@@ -6,7 +6,7 @@
 /*   By: tappourc <tappourc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 11:43:52 by tappourc          #+#    #+#             */
-/*   Updated: 2024/04/17 16:20:07 by tappourc         ###   ########.fr       */
+/*   Updated: 2024/04/17 20:22:08 by tappourc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,17 +17,12 @@ void	*monitoring(void *param)
 	t_all	*all;
 
 	all = (t_all *)param;
+	ft_safe_print("enter in monitoring", &all->philo[0]);
 	while (true)
 	{
-		pthread_mutex_lock(&all->dead_mtx);
-		if (check_death(all) == false)
-		{
-			// ft_usleep(10);
-			pthread_mutex_unlock(&all->dead_mtx);
+		if (!check_death(all))
 			break ;
-		}
-		pthread_mutex_unlock(&all->dead_mtx);
-		// ft_usleep(1);
+		ft_usleep(1);
 	}
 	return (all);
 }
@@ -54,11 +49,11 @@ int	check_meal(t_philo *philo)
 	pthread_mutex_lock(&philo->meal);
 	if ((time - philo->last_meal) > philo->all_data->time_to_die)
 	{
-		pthread_mutex_lock(&philo->dead_mtx);
-		philo->all_data->is_dead = true;
-		pthread_mutex_unlock(&philo->dead_mtx);
-		ft_safe_print("is dead ----------- debug", philo);
 		pthread_mutex_unlock(&philo->meal);
+		pthread_mutex_lock(&philo->all_data->dead_mtx);
+		philo->all_data->is_dead = true;
+		pthread_mutex_unlock(&philo->all_data->dead_mtx);
+		ft_safe_print("is dead ----------- debug", philo);
 		return (false);
 	}
 	pthread_mutex_unlock(&philo->meal);
@@ -67,12 +62,12 @@ int	check_meal(t_philo *philo)
 
 int	a_philo_is_dead(t_philo *philo)
 {
-	pthread_mutex_lock(&philo->dead_mtx);
+	pthread_mutex_lock(&philo->all_data->dead_mtx);
 	if (philo->all_data->is_dead == true)
 	{
-		pthread_mutex_unlock(&philo->dead_mtx);
+		pthread_mutex_unlock(&philo->all_data->dead_mtx);
 		return (true);
 	}
-	pthread_mutex_unlock(&philo->dead_mtx);
+	pthread_mutex_unlock(&philo->all_data->dead_mtx);
 	return (false);
 }

@@ -6,7 +6,7 @@
 /*   By: tappourc <tappourc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/05 09:51:07 by tappourc          #+#    #+#             */
-/*   Updated: 2024/04/17 16:09:36 by tappourc         ###   ########.fr       */
+/*   Updated: 2024/04/17 20:32:06 by tappourc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,22 +19,10 @@ void	free_phil(t_philo *philo, int nb)
 	i = 0;
 	while (i < nb)
 	{
-		pthread_mutex_destroy(&philo[i].left_fork);
-		pthread_mutex_destroy(&philo[i].meal);
-		if (nb > 1)
-			pthread_mutex_destroy(philo[i].right_fork);
-		// pthread_mutex_destroy(&philo[i].dead_mtx);
-		// pthread_mutex_destroy(&philo[i].print_mtx);
+		pthread_join(philo[i].thread, NULL);
 		i++;
 	}
 	free(philo);
-}
-
-void	free_all(t_all *all)
-{
-	pthread_mutex_destroy(&all->dead_mtx);
-	pthread_mutex_destroy(&all->print_mtx);
-	free(all);
 }
 
 int	ft_usleep(size_t milliseconds)
@@ -51,18 +39,28 @@ size_t	get_current_time(void)
 {
 	struct timeval	time;
 
-	if (gettimeofday(&time, NULL) == -1)
-		write(2, "gettimeofday() error\n", 22);
-	return (time.tv_sec * 1000 + time.tv_usec / 1000);
+	gettimeofday(&time, NULL);
+	return ((time.tv_sec * 1000 + time.tv_usec / 1000));
 }
 
 void	ft_safe_print(char *str, t_philo *philo)
 {
 	int	time;
 
-	pthread_mutex_lock(&(philo->print_mtx));
-	time = get_current_time() - philo->start_time;
+	pthread_mutex_lock(&philo->all_data->dead_mtx);
+	if (philo->all_data->is_dead == true && ft_strncmp(str, "is dead", 7) != 0)
+	{
+		pthread_mutex_unlock(&philo->all_data->dead_mtx);
+		return ;
+	}
+	pthread_mutex_unlock(&philo->all_data->dead_mtx);
+	pthread_mutex_lock(&(philo->all_data->timer));
+	time = get_current_time() - philo->all_data->start_time;
+	pthread_mutex_unlock(&(philo->all_data->timer));
 	if (time >= 0 && time <= 2147483647)
+	{
+		pthread_mutex_lock(&(philo->all_data->print_mtx));
 		printf("[%d] %d %s\n", time, philo->id, str);
-	pthread_mutex_unlock(&(philo->print_mtx));
+		pthread_mutex_unlock(&(philo->all_data->print_mtx));
+	}
 }
