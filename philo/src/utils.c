@@ -6,23 +6,25 @@
 /*   By: tappourc <tappourc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/05 09:51:07 by tappourc          #+#    #+#             */
-/*   Updated: 2024/04/17 20:32:06 by tappourc         ###   ########.fr       */
+/*   Updated: 2024/04/18 14:46:53 by tappourc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	free_phil(t_philo *philo, int nb)
+void	free_phil(t_all *all)
 {
 	int	i;
 
 	i = 0;
-	while (i < nb)
+	while (i < all->nb_philo)
 	{
-		pthread_join(philo[i].thread, NULL);
+		pthread_join(all->philo[i].thread, NULL);
 		i++;
 	}
-	free(philo);
+	pthread_join(all->monit, NULL);
+	free(all->philo);
+	free(all);
 }
 
 int	ft_usleep(size_t milliseconds)

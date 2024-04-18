@@ -6,7 +6,7 @@
 /*   By: tappourc <tappourc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 16:57:13 by tappourc          #+#    #+#             */
-/*   Updated: 2024/04/17 20:30:45 by tappourc         ###   ########.fr       */
+/*   Updated: 2024/04/18 14:41:36 by tappourc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ typedef enum e_bool
 	false = 0,
 	none = -1,
 	MAX_PHIL = 200
-}					e_bool;
+}			t_bool;
 
 typedef struct s_philo
 {
@@ -43,6 +43,7 @@ typedef struct s_philo
 	pthread_t		thread;
 	pthread_mutex_t	left_fork;
 	pthread_mutex_t	meal;
+	pthread_mutex_t	count_meal;
 	pthread_mutex_t	*right_fork;
 }					t_philo;
 
@@ -68,7 +69,7 @@ int					ft_usleep(size_t milliseconds);
 size_t				get_current_time(void);
 void				ft_safe_print(char *str, t_philo *philo);
 // void				free_all(t_all *all);
-void				free_phil(t_philo *philo, int nb);
+void				free_phil(t_all *all);
 int					ft_strncmp(const char *s1, const char *s2, size_t n);
 
 // INIT
@@ -81,7 +82,6 @@ int					init_philo(t_all *all, t_philo *philos, int nb,
 // ACTION
 void				*routine(void *phil);
 void				is_eating(t_philo *philo);
-int					all_eat(t_philo *philo);
 
 // MONITORING
 void				*monitoring(void *param);

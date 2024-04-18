@@ -6,7 +6,7 @@
 /*   By: tappourc <tappourc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 10:49:13 by tappourc          #+#    #+#             */
-/*   Updated: 2024/04/17 19:52:43 by tappourc         ###   ########.fr       */
+/*   Updated: 2024/04/18 15:16:54 by tappourc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,12 +29,13 @@ int	init_data(int ac, char **av, t_all *all)
 		all->must_eat = ft_atoi(av[5]);
 	else
 		all->must_eat = none;
+	if (check_args(all) == false)
+		return (false);
 	all->philo = malloc(sizeof(t_philo) * all->nb_philo);
 	if (!all->philo)
 		return (false);
-	if (check_args(all) == false)
-		return (false);
-	printf("DEBUG: T2die:%d T2eat:%d T2sleep:%d\n", all->time_to_die, all->time_to_eat, all->time_to_sleep);
+	printf("DEBUG: T2die:%d T2eat:%d T2sleep:%d\n", all->time_to_die,
+		all->time_to_eat, all->time_to_sleep);
 	return (true);
 }
 
@@ -85,21 +86,13 @@ int	init_philo(t_all *all, t_philo *philos, int nb, pthread_mutex_t *forks_tab)
 		philos[i].last_meal = 0;
 		philos[i].left_fork = forks_tab[i];
 		pthread_mutex_init(&philos[i].meal, NULL);
+		pthread_mutex_init(&philos[i].count_meal, NULL);
 		if (i > 0)
 			philos[i].right_fork = &(philos[i - 1].left_fork);
 	}
 	philos[0].right_fork = &(philos[nb - 1].left_fork);
-	// printf("test\n");
 	if (pthread_create(&all->monit, NULL, &monitoring, all) != 0)
 		return (false);
-	i = -1;
-	while (++i < nb)
-	{
-		// ft_safe_print("THREadING", &all->philo[i]);
-		if (pthread_create(&philos[i].thread, NULL, &routine, &philos[i]) != 0)
-			return (false);
-		ft_usleep(1);
-	}
 	launch_time(all);
 	return (true);
 }
@@ -109,9 +102,16 @@ void	launch_time(t_all *all)
 	int	i;
 	int	time;
 
+	i = -1;
+	while (++i < all->nb_philo)
+	{
+		if (pthread_create(&all->philo[i].thread, NULL, &routine,
+				&all->philo[i]) != 0)
+			return ;
+	}
 	i = 0;
 	time = get_current_time();
-	while(i < all->nb_philo)
+	while (i < all->nb_philo)
 	{
 		pthread_mutex_lock(&all->philo[i].meal);
 		all->philo[i].last_meal = time;
