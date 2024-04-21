@@ -6,7 +6,7 @@
 /*   By: tappourc <tappourc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 10:49:13 by tappourc          #+#    #+#             */
-/*   Updated: 2024/04/18 15:16:54 by tappourc         ###   ########.fr       */
+/*   Updated: 2024/04/21 17:00:33 by tappourc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,6 @@ int	init_data(int ac, char **av, t_all *all)
 	all->philo = malloc(sizeof(t_philo) * all->nb_philo);
 	if (!all->philo)
 		return (false);
-	printf("DEBUG: T2die:%d T2eat:%d T2sleep:%d\n", all->time_to_die,
-		all->time_to_eat, all->time_to_sleep);
 	return (true);
 }
 
@@ -52,7 +50,7 @@ int	check_args(t_all *all)
 		printf("Time in 'ms' must be >= 60\n");
 		return (false);
 	}
-	if (all->must_eat == 0)
+	if (all->must_eat != none && (all->must_eat <= 0))
 	{
 		printf("'number_of_times_each_philosopher_must_eat' must be > 0\n");
 		return (false);
@@ -81,7 +79,7 @@ int	init_philo(t_all *all, t_philo *philos, int nb, pthread_mutex_t *forks_tab)
 	{
 		philos[i].all_data = all;
 		philos[i].ate = 0;
-		philos[i].id = i;
+		philos[i].id = i + 1;
 		philos[i].must_eat = all->must_eat;
 		philos[i].last_meal = 0;
 		philos[i].left_fork = forks_tab[i];
@@ -109,8 +107,8 @@ void	launch_time(t_all *all)
 				&all->philo[i]) != 0)
 			return ;
 	}
-	i = 0;
 	time = get_current_time();
+	i = 0;
 	while (i < all->nb_philo)
 	{
 		pthread_mutex_lock(&all->philo[i].meal);

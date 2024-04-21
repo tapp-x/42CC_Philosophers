@@ -6,7 +6,7 @@
 /*   By: tappourc <tappourc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 16:57:13 by tappourc          #+#    #+#             */
-/*   Updated: 2024/04/18 14:41:36 by tappourc         ###   ########.fr       */
+/*   Updated: 2024/04/21 15:09:08 by tappourc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ typedef enum e_bool
 	false = 0,
 	none = -1,
 	MAX_PHIL = 200
-}			t_bool;
+}					t_bool;
 
 typedef struct s_philo
 {
@@ -88,5 +88,5 @@ void				*monitoring(void *param);
 int					check_meal(t_philo *philo);
 int					check_death(t_all *all);
 int					a_philo_is_dead(t_philo *philo);
-
+void				waiting_start(t_philo *philo);
 #endif

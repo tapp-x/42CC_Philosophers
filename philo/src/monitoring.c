@@ -6,7 +6,7 @@
 /*   By: tappourc <tappourc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 11:43:52 by tappourc          #+#    #+#             */
-/*   Updated: 2024/04/18 15:32:04 by tappourc         ###   ########.fr       */
+/*   Updated: 2024/04/21 17:04:23 by tappourc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ void	*monitoring(void *param)
 	t_all	*all;
 
 	all = (t_all *)param;
+	waiting_start(all->philo);
 	while (true)
 	{
 		if (!check_death(all))
@@ -40,12 +41,13 @@ void	all_eat(t_all *all)
 	while (i < all->nb_philo)
 	{
 		pthread_mutex_lock(&all->philo[i].count_meal);
-		if (all->philo[i].ate == all->must_eat)
+		if (all->philo[i].ate >= all->must_eat)
 			count++;
 		pthread_mutex_unlock(&all->philo[i].count_meal);
 		i++;
+		ft_usleep(5);
 	}
-	if (count == all->nb_philo - 1)
+	if (count == all->nb_philo)
 	{
 		pthread_mutex_lock(&all->dead_mtx);
 		all->is_dead = true;
@@ -57,12 +59,13 @@ int	check_death(t_all *all)
 {
 	int	i;
 
-	i = -1;
-	while (++i < all->nb_philo)
+	i = 0;
+	while (i < all->nb_philo)
 	{
 		if (check_meal(&all->philo[i]) == false
 			|| a_philo_is_dead(&all->philo[i]) == true)
 			return (false);
+		i++;
 	}
 	return (true);
 }
@@ -79,7 +82,7 @@ int	check_meal(t_philo *philo)
 		pthread_mutex_lock(&philo->all_data->dead_mtx);
 		philo->all_data->is_dead = true;
 		pthread_mutex_unlock(&philo->all_data->dead_mtx);
-		ft_safe_print("is dead ----------- debug", philo);
+		ft_safe_print("is dead", philo);
 		return (false);
 	}
 	pthread_mutex_unlock(&philo->meal);

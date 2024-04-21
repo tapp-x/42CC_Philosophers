@@ -6,11 +6,13 @@
 /*   By: tappourc <tappourc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 17:03:42 by tappourc          #+#    #+#             */
-/*   Updated: 2024/04/18 14:46:44 by tappourc         ###   ########.fr       */
+/*   Updated: 2024/04/21 15:10:41 by tappourc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+void	keep_thread(t_all *all);
 
 int	main(int ac, char **av)
 {
@@ -34,6 +36,13 @@ int	main(int ac, char **av)
 	if (init_philo(all, all->philo, all->nb_philo, forks_tabs) == false)
 		printf("Failed to create thread\n");
 	pthread_mutex_lock(&all->dead_mtx);
+	keep_thread(all);
+	free_phil(all);
+	return (0);
+}
+
+void	keep_thread(t_all *all)
+{
 	while (all->is_dead == false)
 	{
 		pthread_mutex_unlock(&all->dead_mtx);
@@ -41,6 +50,4 @@ int	main(int ac, char **av)
 		pthread_mutex_lock(&all->dead_mtx);
 	}
 	pthread_mutex_unlock(&all->dead_mtx);
-	free_phil(all);
-	return (0);
 }
